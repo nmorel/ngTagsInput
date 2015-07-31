@@ -290,7 +290,7 @@ describe('tags-input directive', function() {
             compile();
 
             // Assert
-            expect($scope.tags).toEqual([
+            expect(isolateScope.tagList.items).toEqual([
                 { text: 'Item1' },
                 { text: 'Item2' },
                 { text: 'Item3' }
@@ -1051,7 +1051,7 @@ describe('tags-input directive', function() {
 
                     // Assert
                     expect(getInput().val()).toBe('Tag3');
-                    expect($scope.tags).toEqual([{ text: 'Tag1' }, { text: 'Tag2' }]);
+                    expect(isolateScope.tagList.items).toEqual([{ text: 'Tag1' }, { text: 'Tag2' }]);
                     expect(isolateScope.events.trigger).toHaveBeenCalledWith('input-change', 'Tag3');
                 });
 
@@ -1312,7 +1312,7 @@ describe('tags-input directive', function() {
             compile('display-property="label"');
 
             // Assert
-            expect($scope.tags).toEqual([
+            expect(isolateScope.tagList.items).toEqual([
                 { label: 'Item1' },
                 { label: 'Item2' },
                 { label: 'Item3' }

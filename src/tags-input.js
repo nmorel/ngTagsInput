@@ -151,7 +151,7 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, tagsInpu
         restrict: 'E',
         require: 'ngModel',
         scope: {
-            tags: '=ngModel',
+            model: '=ngModel',
             text: '=?',
             onTagAdding: '&',
             onTagAdded: '&',
@@ -251,6 +251,15 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, tagsInpu
                 ngModelCtrl.$setValidity('leftoverText', scope.hasFocus || options.allowLeftoverText ? true : !scope.newTag.text());
             };
 
+            ngModelCtrl.$render = function() {
+                if (ngModelCtrl.$viewValue) {
+                    tagList.items = tiUtil.makeObjectArray(ngModelCtrl.$viewValue, options.displayProperty);
+                }
+                else {
+                    tagList.items = [];
+                }
+            };
+
             ngModelCtrl.$isEmpty = function(value) {
                 return !value || !value.length;
             };
@@ -272,17 +281,14 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, tagsInpu
                 return tag[options.keyProperty || options.displayProperty];
             };
 
-            scope.$watch('tags', function(value) {
-                if (value) {
-                    tagList.items = tiUtil.makeObjectArray(value, options.displayProperty);
-                    scope.tags = tagList.items;
+            scope.$watch(function() {
+                if (!scope.model) {
+                    return -1;
                 }
                 else {
-                    tagList.items = [];
+                    return scope.model.length;
                 }
-            });
-
-            scope.$watch('tags.length', function() {
+            }, function() {
                 setElementValidity();
 
                 // ngModelController won't trigger validators when the model changes (because it's an array),
@@ -351,11 +357,13 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, tagsInpu
                     scope.newTag.text('');
                 })
                 .on('tag-added tag-removed', function() {
-                    scope.tags = tagList.items;
-                    // Ideally we should be able call $setViewValue here and let it in turn call $setDirty and $validate
-                    // automatically, but since the model is an array, $setViewValue does nothing and it's up to us to do it.
-                    // Unfortunately this won't trigger any registered $parser and there's no safe way to do it.
-                    ngModelCtrl.$setDirty();
+                  var tags = [];
+                  if (tagList.items) {
+                      angular.forEach(tagList.items, function(value) {
+                          tags.push(value);
+                      });
+                  }
+                  ngModelCtrl.$setViewValue(tags);
                 })
                 .on('invalid-tag', function() {
                     scope.newTag.invalid = true;

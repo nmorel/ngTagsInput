@@ -6,3 +6,5 @@ coverage/
 *.log
 build/
 sauce.json
+
+*.iml
