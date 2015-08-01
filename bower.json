@@ -1,0 +1,14 @@
+{
+  "name": "ng-tags-input",
+  "version": "3.0.1",
+  "location": "https://github.com/nmorel/ngTagsInput",
+  "homepage": "http://nmorel.github.io/ngTagsInput",
+  "main": [
+    "ng-tags-input.js",
+    "ng-tags-input.css"
+  ],
+  "description": "Tags input directive for AngularJS",
+  "dependencies": {
+    "angular": ">=1.3.0"
+  }
+}
