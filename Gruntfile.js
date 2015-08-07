@@ -34,7 +34,8 @@ module.exports = function(grunt) {
                     'src/autosize.js',
                     'src/bind-attrs.js',
                     'src/configuration.js',
-                    'src/util.js'
+                    'src/util.js',
+                    'src/restrict-to-max-tags.js'
                 ],
                 out: 'build/<%= pkg.name %>.js',
                 outMin: 'build/<%= pkg.name %>.min.js'
